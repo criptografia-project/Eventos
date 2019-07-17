@@ -1,0 +1,186 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Microservice Events
+  description: NodeJs + MySQL
+  license:
+    name: Software Architecture 2018-II
+host: 192.168.99.101:3000
+basePath: /events
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /events:
+    post:
+      summary: Creates a new event
+      operationId: createEvent
+      parameters:
+        - name: event
+          in: body
+          required: true
+          description: Event Object
+          schema:
+            $ref: '#/definitions/EventInput'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/Event'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    get:
+      summary: Returns all events
+      operationId: getEvents
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/EventsList'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'        
+  /events/{id}:
+    put:
+      summary: Updates a event with the given id
+      operationId: updateEvent
+      parameters:
+        - name: id
+          in: path
+          description: The code of the event to be updated
+          required: true
+          type: integer
+        - name: event
+          in: body
+          required: true
+          description: Event Object
+          schema:
+            $ref: '#/definitions/EventInput'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Event'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    delete:
+      summary: Deletes a event with the given id
+      operationId: deleteEvent
+      parameters:
+        - name: id
+          in: path
+          description: The event to be deleted
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/EventId'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+definitions:
+  Event:
+    type: Object
+    properties:
+      id:
+        type: integer
+      name: 
+        type: string
+      location: 
+        type: string
+      date: 
+        type: string
+      capacity: 
+        type: integer
+      audence: 
+        type: string
+      description: 
+        type: string
+      tipo: 
+        type: string
+  
+  EventInput:
+    type: Object
+    properties:
+      name: 
+        type: string
+      location: 
+        type: string
+      date: 
+        type: string
+      capacity: 
+        type: integer
+      audence: 
+        type: string
+      description: 
+        type: string
+      tipo: 
+        type: string
+  
+  EventsList:
+    type: object
+    required:
+      - total
+      - list
+    properties:
+      total:
+        type: number
+      list:
+        type: array
+        items:
+          $ref: '#/definitions/Event'
+  
+  EventId:
+    type: object
+    properties:
+      id:
+        type: integer
+  
+  ErrorModel:
+    type: object
+    required:
+      - message
+      - id
+    properties:
+      message:
+        type: string
+      id:
+        type: number
+      description:
+        type: object
