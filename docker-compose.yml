@@ -19,7 +19,7 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_HOST: eventos-db
-      MYSQL_PORT: 3307
+      MYSQL_PORT: 3306
       MYSQL_DATABASE: Events
       MYSQL_USER: mysql
       MYSQL_PASSWORD: 1234
